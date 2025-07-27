@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rachna's Birthday Journal</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
+    
+    <style>
+        :root {
+            --primary: #f9a8d4;
+            --secondary: #c084fc;
+            --accent: #fda4af;
+            --dark: #4b5563;
+            --light: #f3f4f6;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #fff5f8;
+            color: var(--dark);
+        }
+        
+        .script-font {
+            font-family: 'Dancing Script', cursive;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #f9a8d4, #c084fc);
+        }
+        
+        .glass-effect {
+            backdrop-filter: blur(10px);
+            background-color: rgba(255, 255, 255, 0.7);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+        
+        .timeline-container {
+            position: relative;
+        }
+        
+        .timeline-line {
+            position: absolute;
+            width: 6px;
+            background-color: var(--primary);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 10px;
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 60px;
+        }
+        
+        .timeline-item:nth-child(odd) {
+            text-align: right;
+            padding-right: 50px;
+        }
+        
+        .timeline-item:nth-child(even) {
+            text-align: left;
+            padding-left: 50px;
+            margin-left: auto;
+        }
+        
+        .timeline-dot {
+            width: 25px;
+            height: 25px;
+            background-color: var(--secondary);
+            border-radius: 50%;
+            position: absolute;
+            top: 15px;
+        }
+        
+        .timeline-item:nth-child(odd) .timeline-dot {
+            right: -12px;
+        }
+        
+        .timeline-item:nth-child(even) .timeline-dot {
+            left: -12px;
+        }
+        
+        .photo-card {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .photo-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .quiz-option {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .quiz-option:hover {
+            transform: translateY(-5px);
+        }
+        
+        .quiz-option.selected {
+            border-color: var(--primary);
+            background-color: rgba(249, 168, 212, 0.1);
+        }
+        
+        .heart-animation {
+            animation: heartbeat 1.5s infinite;
+        }
+        
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .floating-animation {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0); }
+        }
+        
+        .gallery-container {
+            column-count: 3;
+            column-gap: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .gallery-container {
+                column-count: 2;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .gallery-container {
+                column-count: 1;
+            }
+        }
+        
+        .swiper-slide {
+            height: auto;
+        }
+        
+        .swiper-pagination-bullet-active {
+            background: var(--primary);
+        }
+        
+        /* Custom Animations */
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+        }
+        
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+        
+        .slide-in-right {
+            transform: translateX(100px);
+            opacity: 0;
+            animation: slideInRight 1s forwards;
+        }
+        
+        @keyframes slideInRight {
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        .bounce-in {
+            transform: scale(0.5);
+            opacity: 0;
+            animation: bounceIn 0.8s forwards cubic-bezier(0.215, 0.610, 0.355, 1.000);
+        }
+        
+        @keyframes bounceIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            60% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        /* Quiz Styles */
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        #quiz-progress {
+            height: 8px;
+            background-color: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        #quiz-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: width 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header with Logo -->
+    <header class="fixed top-0 w-full z-50 glass-effect py-4">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <div class="logo flex items-center">
+        
+                <img src="rachna/doc.jpg" alt="Rachna's Logo" class="w-12 h-12 rounded-full mr-3">
+                <h3 class="ml-3 text-xl font-semibold gradient-text">Rachna's Journal</h3>
+            </div>
+            <nav>
+                <ul class="flex space-x-6">
+                    <li><a href="#home" class="hover:text-pink-500 transition-colors">Home</a></li>
+                    <li><a href="#timeline" class="hover:text-pink-500 transition-colors">Timeline</a></li>
+                    <li><a href="#gallery" class="hover:text-pink-500 transition-colors">Gallery</a></li>
+                    <li><a href="#quiz" class="hover:text-pink-500 transition-colors">Quiz</a></li>
+                    <li><a href="#message" class="hover:text-pink-500 transition-colors">Message</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="min-h-screen pt-24 flex flex-col justify-center items-center text-center px-4">
+        <div class="container mx-auto" data-aos="fade-up" data-aos-duration="1000">
+            <div class="mb-8">
+                <img src="rachna/cute.jpg" class="w-60 h-62 mx-auto mb-6 rounded-full shadow-lg floating-animation">
+            </div>
+            <h1 class="text-5xl md:text-7xl font-bold mb-4 script-font gradient-text">Rachna Phuyal</h1>
+            <p class="text-xl mb-6">Born on July 27, 2001</p>
+            <div class="heart-animation inline-block text-pink-500 text-3xl mb-8">
+                <i class="fas fa-heart"></i>
+            </div>
+            <p class="text-lg max-w-2xl mx-auto mb-10">A celebration of our journey together since Sainik school. Eight incredible years of memories, laughter, and love.</p>
+            <a href="#timeline" class="gradient-bg text-white px-8 py-3 rounded-full font-medium hover:shadow-lg transition-all">
+                Explore Our Journey <i class="fas fa-arrow-down ml-2"></i>
+            </a>
+        </div>
+        
+        <div class="absolute bottom-10 left-0 w-full flex justify-center animate-bounce">
+            <a href="#timeline" class="text-pink-500">
+                <i class="fas fa-chevron-down text-2xl"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- Timeline Section -->
+    <section id="timeline" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center mb-16 script-font gradient-text" data-aos="fade-up">Our Journey Together</h2>
+            
+            <div class="timeline-container max-w-4xl mx-auto relative">
+                <div class="timeline-line"></div>
+                
+                <!-- 2074 -->
+                <div class="timeline-item w-full md:w-5/12" data-aos="fade-right" data-aos-delay="100">
+                    <div class="timeline-dot"></div>
+                    <div class="bg-white rounded-xl shadow-md p-6">
+                        <h3 class="text-2xl font-bold mb-2 text-pink-500">2074 </h3>
+                        <p class="text-gray-600 mb-4">Where it all began - Sainik school days. First time your eyes gazed me in section B and the start of something beautiful.</p>
+                        <div class="photo-card">
+                            <img src="rachna/shy.jpg" alt="2017 Memory" class="full rounded-lg">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 2075 -->
+                <div class="timeline-item w-full md:w-5/12" data-aos="fade-left" data-aos-delay="200">
+                    <div class="timeline-dot"></div>
+                    <div class="bg-white rounded-xl shadow-md p-6">
+                        <h3 class="text-2xl font-bold mb-2 text-pink-500">2075 </h3>
+                        <p class="text-gray-600 mb-4">The urge to click a good photo with you - finally succeeded. Worth every try. </p>
+                        <div class="photo-card">
+                            <img src="rachna/program.JPG" alt="2018 Memory" class="w-full rounded-lg" >
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 2076 -->
+                <div class="timeline-item w-full md:w-5/12" data-aos="fade-right" data-aos-delay="300">
+                    <div class="timeline-dot"></div>
+                    <div class="bg-white rounded-xl shadow-md p-6">
+                        <h3 class="text-2xl font-bold mb-2 text-pink-500">2076</h3>
+                        <p class="text-gray-600 mb-4">Growing together - College ends, and the real questions begin. Heart full of memories, mind full of doubts — but somewhere in this uncertainty, the right path revealed itself</p>
+                        <div class="photo-card">
+                            <img src="rachna/2019 bir.jpg" alt="2019 Memory" class="w-full rounded-lg">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 2077 -->
+                <div class="timeline-item w-full md:w-5/12" data-aos="fade-left" data-aos-delay="400">
+                    <div class="timeline-dot"></div>
+                    <div class="bg-white rounded-xl shadow-md p-6">
+                        <h3 class="text-2xl font-bold mb-2 text-pink-500">2077</h3>
+                        <p class="text-gray-600 mb-4">Miles apart, yet hearts aligned- even COVID couldn't quarantine what we felt.</p>
+                        <div class="photo-card">
+                            <img src="rachna/covid.jpg" alt="2020 Memory" class="w-full rounded-lg">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 2078 -->
+                <div class="timeline-item w-full md:w-5/12" data-aos="fade-right" data-aos-delay="500">
+                    <div class="timeline-dot"></div>
+                    <div class="bg-white rounded-xl shadow-md p-6">
+                        <h3 class="text-2xl font-bold mb-2 text-pink-500">2078</h3>
+                        <p class="text-gray-600 mb-4">Carrier started: You heal wounds; I prepare to face them. Your world is saving lives, mine is defending them.</p>
+                        <div class="photo-card">
+                            <img src="rachna/army vs nurse.jpg" alt="2021 Memory" class="w-full rounded-lg">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 2079 -->
+                <div class="timeline-item w-full md:w-5/12" data-aos="fade-left" data-aos-delay="600">
+                    <div class="timeline-dot"></div>
+                    <div class="bg-white rounded-xl shadow-md p-6">
+                        <h3 class="text-2xl font-bold mb-2 text-pink-500">2079</h3>
+                        <p class="text-gray-600 mb-4"> I was in India, you in Nepal. Yet somehow, we grew even closer. Love doesn’t measure miles; it measures how tightly we hold on when we’re far.</p>
+                        <div class="photo-card">
+                            <img src="rachna/nepalindia.jpg" alt="2022 Memory" class="w-full rounded-lg">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 2080 -->
+                <div class="timeline-item w-full md:w-5/12" data-aos="fade-right" data-aos-delay="700">
+                    <div class="timeline-dot"></div>
+                    <div class="bg-white rounded-xl shadow-md p-6">
+                        <h3 class="text-2xl font-bold mb-2 text-pink-500">2080</h3>
+                        <p class="text-gray-600 mb-4">Shining lieutenant ✅
+                            Beautiful girlfriend ✅
+                            Unstoppable team ✅</p>
+                        <div class="photo-card">
+                            <img src="rachna/passout.jpg" alt="2023 Memory" class="w-full rounded-lg">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 2081 -->
+                <div class="timeline-item w-full md:w-5/12" data-aos="fade-left" data-aos-delay="800">
+                    <div class="timeline-dot"></div>
+                    <div class="bg-white rounded-xl shadow-md p-6">
+                        <h3 class="text-2xl font-bold mb-2 text-pink-500">2081</h3>
+                        <p class="text-gray-600 mb-4">Lieutenant & Nurse.
+                            Discipline & Compassion.
+                            We didn’t just chase dreams — we caught them, together.</p>
+                        <div class="photo-card">
+                            <img src="rachna/graduation.jpg" alt="2024 Memory" class="w-full rounded-lg">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 2082 -->
+                <div class="timeline-item w-full md:w-5/12" data-aos="fade-right" data-aos-delay="900">
+                    <div class="timeline-dot"></div>
+                    <div class="bg-white rounded-xl shadow-md p-6">
+                        <h3 class="text-2xl font-bold mb-2 text-pink-500">2082</h3>
+                        <p class="text-gray-600 mb-4">What are we now?
+                        We are love — matured, tested, and stronger than ever.</p>
+                        <div class="photo-card">
+                            <img src="rachna/now.JPG" alt="2025 Memory" class="w-full rounded-lg">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Photo Gallery -->
+    <section id="gallery" class="py-20 bg-pink-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center mb-16 script-font gradient-text" data-aos="fade-up"> Gallery </h2>
+           
+            
+            <div class="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" data-aos="fade-up" data-aos-delay="400">
+                <div class="photo-card">
+                    <img src="rachna/2018.jpg" alt="Memory 1" class="w-full rounded-t-lg">
+                    <div class="p-4 bg-white rounded-b-lg">
+                        <h4 class="font-semibold">First Birthday Celeberation</h4>
+                        <p class="text-sm text-gray-600">Where our story began</p>
+                    </div>
+                </div>
+                
+                <div class="photo-card">
+                    <img src="rachna/2019.jpg" alt="Memory 2" class="w-full rounded-t-lg">
+                    <div class="p-4 bg-white rounded-b-lg">
+                        <h4 class="font-semibold">Special surprise party</h4>
+                        <p class="text-sm text-gray-600">Our Second year together</p>
+                    </div>
+                </div>
+               <!--  
+                <div class="photo-card">
+                    <img src="https://marketplace.canva.com/EAE7WqpmFBA/2/0/1131w/canva-cream-modern-happy-birthday-flyer-mqSQRRQzXiI.jpg" alt="Memory 3" class="w-full rounded-t-lg">
+                    <div class="p-4 bg-white rounded-b-lg">
+                        <h4 class="font-semibold">Elegant Celebrations</h4>
+                        <p class="text-sm text-gray-600">Special days with special people</p>
+                    </div>
+                      Relationship Quiz -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+  
+    <!-- Relationship Quiz -->
+    <section id="quiz" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center mb-8 script-font gradient-text" data-aos="fade-up">Maya Ko Quiz</h2>
+            <p class="text-center mb-16 max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="100">How well do you know each other? Take this fun quiz to test your bond!</p>
+            
+            <div class="quiz-container" data-aos="fade-up" data-aos-delay="200">
+                <div id="quiz-progress" class="mb-8">
+                    <div id="quiz-progress-bar" style="width: 0%"></div>
+                </div>
+                
+                <div id="quiz-content" class="bg-white rounded-xl shadow-lg p-8">
+                    <!-- Question container will be dynamically updated -->
+                    <div id="question-container">
+                        <h3 class="text-2xl font-semibold mb-6 text-center">Ready to test your relationship knowledge?</h3>
+                        <p class="text-center mb-8">This fun quiz will reveal interesting insights about your relationship dynamics!</p>
+                        <button id="start-quiz" class="w-full gradient-bg text-white py-3 rounded-lg font-medium hover:shadow-lg transition-all">Start Quiz</button>
+                    </div>
+                    
+                    <div id="results-container" class="hidden text-center">
+                        <h3 class="text-2xl font-semibold mb-4 gradient-text">Your Relationship Profile</h3>
+                        <div id="result-profile" class="mb-6"></div>
+                        <div id="result-description" class="mb-8 text-lg"></div>
+                        <button id="restart-quiz" class="gradient-bg text-white px-8 py-3 rounded-lg font-medium hover:shadow-lg transition-all">Take Quiz Again</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Heartfelt Message -->
+    <section id="message" class="py-20 bg-pink-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center mb-16 script-font gradient-text" data-aos="fade-up">Birthday Message</h2>
+            
+            <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-lg p-8 md:p-12" data-aos="fade-up" data-aos-delay="200">
+                <div class="text-right mb-6">
+                    <p class="italic text-gray-500">July 27, 2025</p>
+                </div>
+                
+                <p class="text-lg mb-6 leading-relaxed">Dear Rachna,</p>
+                
+                <div class="mb-8 text-lg leading-relaxed">
+                    <p class="mb-4">As I sit down to write, my heart overflows with love and gratitude, even though it may not be fully shared. Eight incredible years have passed since our hearts first crossed paths, and my love for you has only deepened with time.</p>
+                    
+                    <p class="mb-4">From the very start, your smile, your laugh, and the warmth of your touch captured my heart. Through every twist and turn, you've been my rock, my confidant, and my greatest supporter. Your unwavering love has been my guiding light, and your belief in me has helped me conquer every hardship.</p>
+                    
+                    <p class="mb-4">Each birthday we've celebrated together has been special in its own way. From our high school days to now, we've grown together, learned together, and created countless memories that I'll cherish forever.</p>
+                    
+                    <p class="mb-4">Thank you for being the heartbeat of my existence, I love you more than words can express, always and forever, as I love you 3000 and beyond.</p>
+                </div>
+                
+                <div class="text-right">
+                    <p class="text-lg font-medium">With all my love,</p>
+                    <p class="script-font text-2xl gradient-text">Your Forever</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 bg-gray-800 text-white">
+        <div class="container mx-auto px-4 text-center">
+            <div class="mb-8">
+                <img src="rachna/doc.jpg" alt="Rachna Logo" class="w-16 h-16 mx-auto mb-4 rounded-full">
+                <h3 class="text-2xl script-font">Rachna's Birthday Journal</h3>
+            </div>
+            
+            <p class="mb-6">Created with love for Rachna Phuyal</p>
+            <p class="text-gray-400">July 27, 2025</p>
+            
+            <div class="mt-8 flex justify-center space-x-6">
+                <a href="#home" class="text-pink-300 hover:text-white transition-colors"><i class="fas fa-home"></i></a>
+                <a href="#timeline" class="text-pink-300 hover:text-white transition-colors"><i class="fas fa-clock"></i></a>
+                <a href="#gallery" class="text-pink-300 hover:text-white transition-colors"><i class="fas fa-images"></i></a>
+                <a href="#quiz" class="text-pink-300 hover:text-white transition-colors"><i class="fas fa-question-circle"></i></a>
+                <a href="#message" class="text-pink-300 hover:text-white transition-colors"><i class="fas fa-envelope"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true
+        });
+        
+        // Initialize Swiper
+        const swiper = new Swiper('.mySwiper', {
+            slidesPerView: 1,
+            spaceBetween: 20,
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            breakpoints: {
+                640: {
+                    slidesPerView: 2,
+                    spaceBetween: 20,
+                },
+                1024: {
+                    slidesPerView: 3,
+                    spaceBetween: 30,
+                },
+            },
+        });
+        
+        // Quiz Functionality
+        const quizQuestions = [
+            {
+                question: "Where did we first talk for more than 5 minutes alone?",
+                options: [
+                    "Classroom",
+                    "Physics Lab",
+                    "Random walk near Swarsati Mandir",
+                    "Outside the classroom balcony"
+                    
+                ]
+            },
+            {
+                question: "What was our first proper hangout during college?",
+                options: [
+                    "Practicing for a science exhibition",
+                    "Sitting on the bench during off period",
+                    "That random walk during a rainy day",
+                    "Cheek kiss for your wrong answer"
+                ]
+            },
+            {
+                question: "What was the first thing you thought when I was absent in the class?",
+                options: [
+                    "Without you, this class was soooo peaceful",
+                    "I kinna miss you",
+                    "I hope he never comes back",
+                    "Waiting for you to come back"
+                ]
+            },
+            {
+                question: "When did you realize you had truly fallen for me?",
+                options: [
+                    "When I told you I am goona tie Rakhi from you",
+                    "After we stooped talking for a week",
+                    "Birthday surprise party - together",
+                    "You didn't realize it, you just knew"
+                ]
+            },
+            {
+                question: "What do you still carry from those college days?",
+                options: [
+                    "Your smile in my memory",
+                    "That one photo I never deleted",
+                    "Wrappers, notes, and gifts",
+                    "All the little moments that made me fall in love with you"
+                ]
+            }
+        ];
+        
+        const quizProfiles = [
+    {
+        title: "The Sentimental Soul ❤️",
+        description: "You remember every little detail — from our first long talk to the way we sat during class breaks. Your heart holds onto memories like treasures, and that's what makes you so special. You're the reason our past feels so alive even today."
+    },
+    {
+        title: "The Playful Romantic 😘",
+        description: "You bring the laughter, the inside jokes, the cheek kisses after wrong answers. You're the sunshine in our love story — always finding joy in the smallest moments. Love with you has always felt like fun, adventure, and endless teasing."
+    },
+    {
+        title: "The Loyal Dreamer 💫",
+        description: "You’ve always seen love as more than a feeling — it’s a shared future. Your answers show that you’ve held on through silence, surprises, and long waits. Your loyalty turns distance into connection, and dreams into plans. You’re truly a forever kind of person."
+    },
+    {
+        title: "The Deep Feeler 🥺",
+        description: "You don’t just remember — you *feel*. From missing me in class to quietly falling in love without realizing it, your heart speaks in emotions. And every moment we shared, you held onto with depth, care, and quiet strength. You love silently but powerfully."
+    },
+    {
+        title: "The Memory Keeper 🎒",
+        description: "Wrappers, notes, old photos — you’re the one who carries pieces of the past wherever you go. Your heart is a scrapbook of our college days. You believe the smallest tokens carry the biggest meaning. That’s the kind of love that never fades."
+    }
+];
+
+
+  
+        let currentQuestion = 0;
+        let answers = [];
+        
+        document.getElementById('start-quiz').addEventListener('click', function() {
+            showQuestion(0);
+        });
+        
+        document.getElementById('restart-quiz').addEventListener('click', function() {
+            currentQuestion = 0;
+            answers = [];
+            document.getElementById('results-container').classList.add('hidden');
+            document.getElementById('question-container').classList.remove('hidden');
+            showQuestion(0);
+        });
+        
+        function showQuestion(index) {
+            const question = quizQuestions[index];
+            const progressPercent = (index / quizQuestions.length) * 100;
+            
+            document.getElementById('quiz-progress-bar').style.width = progressPercent + '%';
+            
+            let questionHTML = `
+                <h3 class="text-2xl font-semibold mb-6">${question.question}</h3>
+                <div class="space-y-4">
+            `;
+            
+            question.options.forEach((option, i) => {
+                questionHTML += `
+                    <div class="quiz-option border border-gray-200 rounded-lg p-4 hover:shadow-md" data-index="${i}">
+                        <p>${option}</p>
+                    </div>
+                `;
+            });
+            
+            questionHTML += `
+                </div>
+                <div class="mt-8 text-right">
+                    <p class="text-gray-500">${index + 1} of ${quizQuestions.length}</p>
+                </div>
+            `;
+            
+            document.getElementById('question-container').innerHTML = questionHTML;
+            
+            // Add click event listeners to options
+            document.querySelectorAll('.quiz-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const selectedIndex = parseInt(this.dataset.index);
+                    answers.push(selectedIndex);
+                    
+                    // Mark selected option
+                    document.querySelectorAll('.quiz-option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    this.classList.add('selected');
+                    
+                    // Go to next question after a short delay
+                    setTimeout(() => {
+                        if (currentQuestion < quizQuestions.length - 1) {
+                            currentQuestion++;
+                            showQuestion(currentQuestion);
+                        } else {
+                            showResults();
+                        }
+                    }, 500);
+                });
+            });
+        }
+        
+        function showResults() {
+            document.getElementById('question-container').classList.add('hidden');
+            document.getElementById('results-container').classList.remove('hidden');
+            document.getElementById('quiz-progress-bar').style.width = '100%';
+            
+            // Simple algorithm to determine profile (can be enhanced)
+            const profileIndex = Math.floor(Math.random() * quizProfiles.length);
+            const profile = quizProfiles[profileIndex];
+            
+            document.getElementById('result-profile').innerHTML = `
+                <h4 class="text-3xl font-bold mb-2 script-font">${profile.title}</h4>
+            `;
+            
+            document.getElementById('result-description').textContent = profile.description;
+        }
+        
+        // Scroll to sections smoothly
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
